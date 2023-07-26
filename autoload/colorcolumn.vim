@@ -24,7 +24,7 @@ function s:detectcc(ft) abort
     throw 'colorcolumn: value_path is not provided in ' .. a:ft .. ' config.'
   endif
 
-  let dir = bufname()->fnamemodify(':h')
+  let dir = bufname()->fnamemodify(':p:h')
   while dir !=# '/'
     let files = dir->readdir({ fname -> fname =~# fname_pattern })
     if files->len() ==# 0
