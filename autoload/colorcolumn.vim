@@ -39,9 +39,18 @@ function s:detectcc(ft) abort
     return
   endif
 
-  if file->fnamemodify(':e') ==# 'toml'
-    const root = s:TOML.parse_file(file)
-    const val = GetValue(root)
-    let &l:colorcolumn = val
+  const ext = file->fnamemodify(':e')
+  if ext ==# 'toml'
+    const dict = s:TOML.parse_file(file)
+  elseif ext =~# '^\%(json\|jsonc\)$'
+    const dict = file->readfile()->join()->json_decode()
+  else
+    throw 'colorcolumn: Not supported filetype: ' .. ext
   endif
+  try
+    const value = GetValue(dict)
+    let &l:colorcolumn = value
+  catch /E716/
+    " Key not present in dictionay.
+  endtry
 endfunction

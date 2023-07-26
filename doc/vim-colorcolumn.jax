@@ -1,4 +1,4 @@
-*vim-colorcolumn.txt*         TOMLファイルの特定のキーを参照して'cc'を設定する
+*vim-colorcolumn.txt*       フォーマッタの設定ファイルを参照して'cc'を設定する
 
 ==============================================================================
                                                        *g:colorcolumn_options*
@@ -21,8 +21,9 @@
 
 	                                                 *colorcolumn#setup()*
 
-このプラグインの機能を有効化します。 |g:colorcolumn_options| にはこれの
-呼び出しよりも先に値を割り当てる必要があります。
+	このプラグインの機能を有効化します。
+	|g:colorcolumn_options| にはこれの呼び出しよりも先に
+	値を割り当てる必要があります。
 
 >vim
 	autocmd MyAutoCmd BufReadPost * ++once call colorcolumn#setup()
@@ -32,7 +33,12 @@
 
 サポート状況                                 *colorcolumn-supported-filetypes*
 
-現状、tomlにしか対応していません。希望があればissueにしてください。
+	現状対応しているファイルタイプは以下に示すとおりです。
+	希望があればissueにしてください。
+
+	- toml
+	- json
+	- jsonc
 
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
