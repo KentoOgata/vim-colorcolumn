@@ -35,7 +35,7 @@ function s:detectcc(ft) abort
     break
   endwhile
 
-  if l:->get('file', '')->empty()
+  if !l:->has_key('file')
     return
   endif
 
