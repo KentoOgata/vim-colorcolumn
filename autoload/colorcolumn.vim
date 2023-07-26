@@ -18,10 +18,10 @@ function s:detectcc(ft) abort
   const fname_pattern = opts->get('fname_pattern', v:null)
   const GetValue = opts->get('value_path', v:null)
   if fname_pattern is v:null
-    return
+    throw 'colorcolumn: fname_pattern is not provided in ' .. a:ft .. ' config.'
   endif
   if GetValue is v:null
-    return
+    throw 'colorcolumn: value_path is not provided in ' .. a:ft .. ' config.'
   endif
 
   let dir = bufname()->fnamemodify(':h')
