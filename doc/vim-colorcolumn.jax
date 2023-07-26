@@ -19,6 +19,15 @@
 
 	各キーの値は |'filetype'| の値と一致させてください。
 
+	                                                 *colorcolumn#setup()*
+
+このプラグインの機能を有効化します。 |g:colorcolumn_options| にはこれの
+呼び出しよりも先に値を割り当てる必要があります。
+
+>vim
+	autocmd MyAutoCmd BufReadPost * ++once call colorcolumn#setup()
+<
+
 ==============================================================================
 
 サポート状況                                 *colorcolumn-supported-filetypes*
