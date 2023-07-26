@@ -25,6 +25,10 @@ function s:detectcc(ft) abort
   endif
 
   let dir = bufname()->fnamemodify(':p:h')
+  if !dir->isdirectory()
+    return
+  endif
+
   while dir !=# '/'
     let files = dir->readdir({ fname -> fname =~# fname_pattern })
     if files->len() ==# 0
