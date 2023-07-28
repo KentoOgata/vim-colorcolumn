@@ -25,7 +25,6 @@ colorcolumn#setup({opts})                               *colorcolumn#setup()*
 	パラメータ:
 	  • {opts}  ファイルタイプ毎の設定をする辞書:
 	            • キー: |'filetype'| の値と一致する文字列。
-		      これを使って |FileType| autocmd が定義される。
 		    • fname_pattern (string): フォーマッタの設定ファイル名に
 		      マッチする文字列。
 		    • value_path (funcref): 設定ファイルをパースした

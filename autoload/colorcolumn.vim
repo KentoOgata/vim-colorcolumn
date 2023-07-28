@@ -22,8 +22,9 @@ function colorcolumn#setup(opts) abort
 
   for ft in s:opts->keys()
     let s:memo[ft] = {}
-    exec 'autocmd' 'colorcolumn' 'FileType' ft 'call' 's:set_cc("<amatch>"->expand())'
   endfor
+
+  autocmd colorcolumn FileType * call s:set_cc('<amatch>'->expand())
 endfunction
 
 function s:get_cc(dir, ft, fname_pattern, value_path) abort
@@ -64,6 +65,10 @@ function s:get_cc(dir, ft, fname_pattern, value_path) abort
 endfunction
 
 function s:set_cc(ft) abort
+  if !s:opts->has_key(a:ft)
+    return
+  endif
+
   const opts = s:opts[a:ft]
   const fname_pattern = opts->get('fname_pattern', v:null)
   const GetValue = opts->get('value_path', v:null)
