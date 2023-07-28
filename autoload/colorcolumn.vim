@@ -1,8 +1,8 @@
 const s:Vital = vital#colorcolumn#new()
 const s:TOML = s:Vital.import('Text.TOML')
 
-function colorcolumn#setup() abort
-  const s:opts = g:->get('colorcolumn_options', {})
+function colorcolumn#setup(opts) abort
+  const s:opts = a:opts
 
   augroup colorcolumn
     autocmd!
