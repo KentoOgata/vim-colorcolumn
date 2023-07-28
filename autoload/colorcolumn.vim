@@ -9,11 +9,11 @@ function colorcolumn#setup() abort
   augroup END
 
   for ft in s:opts->keys()
-    exec 'autocmd' 'colorcolumn' 'FileType' ft 'call' 's:detectcc("<amatch>"->expand())'
+    exec 'autocmd' 'colorcolumn' 'FileType' ft 'call' 's:set_cc("<amatch>"->expand())'
   endfor
 endfunction
 
-function s:detectcc(ft) abort
+function s:set_cc(ft) abort
   const opts = s:opts[a:ft]
   const fname_pattern = opts->get('fname_pattern', v:null)
   const GetValue = opts->get('value_path', v:null)
