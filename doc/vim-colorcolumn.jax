@@ -7,10 +7,14 @@ colorcolumn#setup({opts})                               *colorcolumn#setup()*
 	このプラグインの機能を有効化します。
 
 	例: >vim
-	const s:colorcolumn_options = #{
-	      \   lua: #{
+	const s:colorcolumn_options = {
+	      \   'lua': #{
 	      \     fname_pattern: 'stylua\.toml',
 	      \     value_path: { root -> root.column_width },
+	      \   },
+	      \   ['javascript', 'typescript']->join(','): #{
+	      \     fname_pattern: 'deno\.json',
+	      \     value_path: { root -> root.fmt.lineWidth },
 	      \   },
 	      \ }
 

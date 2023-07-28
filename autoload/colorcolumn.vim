@@ -4,7 +4,17 @@ const s:TOML = s:Vital.import('Text.TOML')
 let s:memo = {}
 
 function colorcolumn#setup(opts) abort
-  const s:opts = a:opts
+  let opts = {}
+  for key in a:opts->keys()
+    if key->match(',') ==# -1
+      let opts[key] = a:opts[key]
+    else
+      for ft in key->split(',')
+        let opts[ft] = a:opts[key]
+      endfor
+    endif
+  endfor
+  const s:opts = opts
 
   augroup colorcolumn
     autocmd!
