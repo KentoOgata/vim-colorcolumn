@@ -13,6 +13,45 @@ function colorcolumn#setup(opts) abort
   endfor
 endfunction
 
+let s:memo = {}
+
+function s:get_cc(dir, fname_pattern, value_path) abort
+  if a:dir ==# '/'
+    return v:null
+  endif
+
+  if s:memo->has_key(a:dir)
+    return s:memo[a:dir]
+  endif
+
+  const files = a:dir->readdir({ fname -> fname =~# a:fname_pattern })
+  if files->len() ==# 0
+    const cc = s:get_cc(a:dir->fnamemodify(':h'), a:fname_pattern, a:value_path)
+    let s:memo[a:dir] = cc
+    return cc
+  endif
+
+  const file = [a:dir, files[0]]->join('/')
+  const ext = file->fnamemodify(':e')
+  if ext ==# 'toml'
+    const dict = s:TOML.parse_file(file)
+  elseif ext =~# '^\%(json\|jsonc\)$'
+    const dict = file->readfile()->join()->json_decode()
+  elseif ext =~# 'ya\{,1}ml'
+    const dict = denops#request('colorcolumn', 'parseYaml', [file])
+  else
+    throw 'colorcolumn: Not supported filetype: ' .. ext
+  endif
+  try
+    const cc = a:value_path(dict)
+    let s:memo[a:dir] = cc
+    return cc
+  catch /E716/
+    " Key not present in dictionay.
+    return v:null
+  endtry
+endfunction
+
 function s:set_cc(ft) abort
   const opts = s:opts[a:ft]
   const fname_pattern = opts->get('fname_pattern', v:null)
@@ -29,34 +68,8 @@ function s:set_cc(ft) abort
     return
   endif
 
-  while dir !=# '/'
-    let files = dir->readdir({ fname -> fname =~# fname_pattern })
-    if files->len() ==# 0
-      let dir = dir->fnamemodify(':h')
-      continue
-    endif
-    let file = [dir, files[0]]->join('/')
-    break
-  endwhile
-
-  if !l:->has_key('file')
-    return
+  const cc = s:get_cc(dir, fname_pattern, GetValue)
+  if cc isnot v:null
+    let &l:colorcolumn = cc
   endif
-
-  const ext = file->fnamemodify(':e')
-  if ext ==# 'toml'
-    const dict = s:TOML.parse_file(file)
-  elseif ext =~# '^\%(json\|jsonc\)$'
-    const dict = file->readfile()->join()->json_decode()
-  elseif ext =~# 'ya\{,1}ml'
-    const dict = denops#request('colorcolumn', 'parseYaml', [file])
-  else
-    throw 'colorcolumn: Not supported filetype: ' .. ext
-  endif
-  try
-    const value = GetValue(dict)
-    let &l:colorcolumn = value
-  catch /E716/
-    " Key not present in dictionay.
-  endtry
 endfunction
