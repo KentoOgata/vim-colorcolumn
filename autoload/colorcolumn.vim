@@ -48,6 +48,8 @@ function s:detectcc(ft) abort
     const dict = s:TOML.parse_file(file)
   elseif ext =~# '^\%(json\|jsonc\)$'
     const dict = file->readfile()->join()->json_decode()
+  elseif ext =~# 'ya\{,1}ml'
+    const dict = denops#request('colorcolumn', 'parseYaml', [file])
   else
     throw 'colorcolumn: Not supported filetype: ' .. ext
   endif
