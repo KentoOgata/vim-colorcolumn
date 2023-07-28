@@ -9,7 +9,7 @@ function colorcolumn#setup() abort
   augroup END
 
   for ft in s:opts->keys()
-    exec 'autocmd' 'colorcolumn' 'FileType' ft 'call' 's:detectcc("' .. ft .. '")'
+    exec 'autocmd' 'colorcolumn' 'FileType' ft 'call' 's:detectcc("<amatch>"->expand())'
   endfor
 endfunction
 
